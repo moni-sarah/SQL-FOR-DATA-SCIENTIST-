@@ -1,0 +1,85 @@
+In this lab, I will through some SQL practice problems that will provide hands-on experience with SQL queries
+that access multiple tables. 
+
+
+   -Accessing Multiple Tables with Sub-Queries
+    -Accessing Multiple Tables with Implicit Joins
+    
+     an Implicit version of CROSS JOIN (also known as Cartesian Join) statement syntax look:
+     SELECT column_name(s)
+     FROM table1, table2;
+     
+  How does an Implicit version of INNER JOIN statement syntax look? 
+   SELECT column_name(s)
+   FROM table1, table2
+  WHERE table1.column_name = table2.column_name;
+  
+The database used in this lab is an internal database. You will be working on a sample HR database. 
+This HR database schema consists of 5 tables called EMPLOYEES, JOB_HISTORY, 
+JOBS, DEPARTMENTS and LOCATIONS. Each table has a few rows of sample data.
+
+EXERCIS 1:
+PROBLEM : 
+ Retrieve only the EMPLOYEES records that correspond to jobs in the JOBS table.
+ SOLUTION: 
+ select * from employees where JOB_ID IN (select JOB_IDENT from jobs);
+ 
+PROBLEM 2:
+  Retrieve only the list of employees whose JOB_TITLE is Jr. Designer
+  
+  SOLUTION:
+   select * from employees 
+   where JOB_ID IN (select JOB_IDENT from jobs where JOB_TITLE= 'Jr. Designer');
+   
+PROBLEM 3:
+ Retrieve JOB information and who earn more than $70,000.
+  
+  
+ SOLUTION:
+ select JOB_TITLE, MIN_SALARY,MAX_SALARY,JOB_IDENT 
+ from jobs where JOB_IDENT IN (select JOB_ID from employees where SALARY > 70000 );
+ 
+PROBLEM 4:
+Retrieve JOB information and whose birth year is after 1976.
+
+ SOLUTION:
+  select JOB_TITLE, MIN_SALARY,MAX_SALARY,JOB_IDENT
+  from jobs where JOB_IDENT IN (select JOB_ID from employees where YEAR(B_DATE)>1976 );
+  
+PROBLEM 5:
+ Retrieve JOB information for female employees whose birth year is after 1976.
+ 
+ SOLUTION:
+  select JOB_TITLE, MIN_SALARY,MAX_SALARY,JOB_IDENT 
+  from jobs where JOB_IDENT IN (select JOB_ID from employees where YEAR(B_DATE)>1976 and SEX='F' );
+  
+  
+  Exercise 2: Accessing Multiple Tables with Implicit Joins
+  PROBLEM 1:
+   Perform an implicit cartesian/cross join between EMPLOYEES and JOBS tables.
+   SOLUTION:
+    select * from employees, jobs;
+    
+  PROBLEM 2:
+   Retrieve only the EMPLOYEES records that correspond to jobs in the JOBS table.
+   SOLUTION:
+    select * from employees, jobs where employees.JOB_ID = jobs.JOB_IDENT;
+  
+ PROBLEM 3:
+  Redo the previous query, using shorter aliases for table names.
+  
+  SOLUTION:
+   select * from employees E, jobs J where E.JOB_ID = J.JOB_IDENT;
+   
+ PROBLEM 4:
+  Redo the previous query, but retrieve only the Employee ID, Employee Name and Job Title.
+  
+ SOLUTION:
+  select EMP_ID,F_NAME,L_NAME, JOB_TITLE from employees E, jobs J where E.JOB_ID = J.JOB_IDENT;
+
+PROBLEM 5:
+ Redo the previous query, but specify the fully qualified column names with aliases in the SELECT clause.
+
+SOLUTION :
+ select E.EMP_ID,E.F_NAME,E.L_NAME, J.JOB_TITLE from employees E, jobs J where E.JOB_ID = J.JOB_IDENT;
+ 
